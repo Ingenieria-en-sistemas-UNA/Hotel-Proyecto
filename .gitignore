@@ -90,3 +90,7 @@ nb-configuration.xml
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+.gitignore
+README.md
+pom.xml
+src/
