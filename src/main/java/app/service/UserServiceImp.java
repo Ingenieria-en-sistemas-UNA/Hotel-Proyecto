@@ -33,13 +33,13 @@ public class UserServiceImp implements UserService {
 
 
     @Override
-    public UserResponseDTO signin(String username, String password) {
+    public UserResponseDTO signin(String username, String password) throws CustomException{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             UserResponseDTO responseDTO = getUserResponseDTO(username);
             return responseDTO;
         } catch (AuthenticationException e) {
-            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException("Usuario o contraseña incorrectos", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 

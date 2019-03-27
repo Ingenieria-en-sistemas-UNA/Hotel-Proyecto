@@ -3,6 +3,7 @@ package app.controller;
 import app.dto.UserDataDTO;
 import app.dto.UserResponseDTO;
 import app.entity.User;
+import app.exeption.CustomException;
 import app.service.UserService;
 import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
@@ -30,9 +31,9 @@ public class UserController {
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Algo malo ah sucedio"),
             @ApiResponse(code = 422, message = "username/password invalido")})
-    public ResponseEntity<UserResponseDTO> login(//
+    public ResponseEntity<UserResponseDTO> login (//
                                                  @ApiParam("Username") @RequestParam String username,
-                                                 @ApiParam("Password") @RequestParam String password) {
+                                                 @ApiParam("Password") @RequestParam String password) throws CustomException {
         UserResponseDTO responseDTO = userService.signin(username, password);
         return ResponseEntity.ok().body(responseDTO);
     }

@@ -11,7 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -37,17 +39,17 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Malformed JSON request";
-        return buildResponseEntity(new Error(HttpStatus.BAD_REQUEST, error, ex));
+        return buildResponseEntity(new Error(HttpStatus.BAD_REQUEST.value() , error, ex));
     }
 
     private ResponseEntity<Object> buildResponseEntity(Error error) {
-        return new ResponseEntity<>(error, error.getStatus());
+        return ResponseEntity.status(error.getStatus()).body(error);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(
             EntityNotFoundException ex) {
-        Error apiError = new Error(NOT_FOUND);
+        Error apiError = new Error(NOT_FOUND.value());
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
@@ -55,23 +57,29 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     protected ResponseEntity<Object> handleDataIntegrityViolationException(
             DataIntegrityViolationException ex) {
-        Error apiError = new Error(HttpStatus.CONFLICT);
+        Error apiError = new Error(CONFLICT.value());
         apiError.setMessage("Duplicate Id");
         return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
-        res.sendError(HttpStatus.FORBIDDEN.value(), "Access denied");
+    public ResponseEntity<Object> handleAccessDeniedException(HttpServletResponse res) throws IOException {
+        Error apiError = new Error(UNAUTHORIZED.value());
+        apiError.setMessage("Acceso denegado");
+        return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler(Exception.class)
-    public void handleException(HttpServletResponse res) throws IOException {
-        res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
+    public ResponseEntity<Object> handleException() {
+        Error apiError = new Error(BAD_REQUEST.value());
+        apiError.setMessage("Algo ah ocurrido");
+        return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler(CustomException.class)
-    public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
-        res.sendError(ex.getHttpStatus().value(), ex.getMessage());
+    public ResponseEntity<Object>  handleCustomException(CustomException ex) {
+        Error apiError = new Error(UNAUTHORIZED.value());
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
     }
 }
