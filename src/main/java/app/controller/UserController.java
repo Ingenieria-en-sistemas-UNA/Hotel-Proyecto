@@ -86,10 +86,10 @@ public class UserController {
         return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
     }
 
-    @GetMapping("/refresh")
+    @GetMapping("/refresh/{userName}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    public ResponseEntity<UserResponseDTO> refresh(HttpServletRequest req) {
-        UserResponseDTO responseDTO = userService.refresh(req.getRemoteUser());
+    public ResponseEntity<UserResponseDTO> refresh(@PathVariable String userName) {
+        UserResponseDTO responseDTO = userService.refresh(userName);
         return ResponseEntity.ok().body(responseDTO);
     }
 }
