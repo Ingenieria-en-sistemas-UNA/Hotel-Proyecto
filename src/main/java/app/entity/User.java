@@ -21,6 +21,9 @@ public class User {
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Guest guest;
+
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 
@@ -64,4 +67,11 @@ public class User {
         this.roles = roles;
     }
 
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
 }

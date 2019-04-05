@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.DTOBuilder;
 import app.dto.UserDataDTO;
 import app.dto.UserResponseDTO;
 import app.entity.User;
@@ -72,7 +73,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "El usuario no existe"),
             @ApiResponse(code = 500, message = "JWT token expirado o invalido")})
     public UserResponseDTO search(@ApiParam("Username") @PathVariable String username) {
-        return modelMapper.map(userService.search(username), UserResponseDTO.class);
+        return DTOBuilder.userToUserResponseDTO(userService.search(username));
     }
 
     @GetMapping(value = "/me")

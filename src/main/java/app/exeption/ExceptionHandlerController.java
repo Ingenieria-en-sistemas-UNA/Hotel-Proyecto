@@ -70,8 +70,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException() {
-        Error apiError = new Error(BAD_REQUEST.value());
+    public ResponseEntity<Object> handleException(Exception e) {
+        Error apiError = new Error(BAD_REQUEST.value(), e.getCause());
         apiError.setMessage("Algo ah ocurrido");
         return buildResponseEntity(apiError);
     }
