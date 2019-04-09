@@ -1,6 +1,6 @@
 package app.service;
 
-import app.dao.UserDao;
+import app.dao.UserRepository;
 import app.dto.DTOBuilder;
 import app.dto.UserResponseDTO;
 import app.entity.User;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserServiceImp implements UserService {
     
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,9 +48,9 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public UserResponseDTO signup(User user) {
-        if (!userDao.existsByUsername(user.getUsername())) {
+        if (!userRepository.existsByUsername(user.getUsername())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userDao.save(user);
+            userRepository.save(user);
             String token = this.tokenProvider.createToken(user.getUsername(), user.getRoles());
             UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
             responseDTO.setToken(token);
@@ -63,8 +63,8 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public UserResponseDTO delete(String username) {
-        User user = userDao.findByUsername(username);
-        userDao.deleteByUsername(username);
+        User user = userRepository.findByUsername(username);
+        userRepository.deleteByUsername(username);
         UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
         return responseDTO;
     }
@@ -72,7 +72,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User search(String username) {
-        User user = userDao.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new CustomException("El usuario no fue encontrado", HttpStatus.NOT_FOUND);
         }
@@ -82,7 +82,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User whoami(HttpServletRequest req) {
-        return userDao.findByUsername(this.tokenProvider.getUsername(this.tokenProvider.resolveToken(req)));
+        return userRepository.findByUsername(this.tokenProvider.getUsername(this.tokenProvider.resolveToken(req)));
     }
 
     @Override
@@ -93,7 +93,7 @@ public class UserServiceImp implements UserService {
     }
 
     private UserResponseDTO getUserResponseDTO(String username) {
-        User user = userDao.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         String token = this.tokenProvider.createToken(username, user.getRoles());
         UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
         responseDTO.setToken(token);
