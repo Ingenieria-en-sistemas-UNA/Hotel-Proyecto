@@ -24,16 +24,6 @@ public class UserResponseDTO {
         this.roles = roles;
     }
 
-    public UserResponseDTO(Integer id, String username, String email, List<Role> roles, String token) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.roles = roles;
-        this.token = token;
-    }
-
-
-
     public Integer getId() {
         return id;
     }
