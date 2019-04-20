@@ -3,7 +3,7 @@ package app.dto;
 import app.entity.User;
 
 public class DTOBuilder {
-    public static UserResponseDTO userToUserResponseDTO(User user){
-        return new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail(), user.getRoles());
+    public static UserDTO userToUserDTO(User user){
+        return new UserDTO(user.getId(), user.getUsername(), user.getRoles(), user.getClient());
     }
 }

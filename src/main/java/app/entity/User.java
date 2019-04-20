@@ -15,14 +15,11 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Guest guest;
+    private Client client;
 
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
@@ -43,14 +40,6 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -67,11 +56,11 @@ public class User {
         this.roles = roles;
     }
 
-    public Guest getGuest() {
-        return guest;
+    public Client getClient() {
+        return client;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

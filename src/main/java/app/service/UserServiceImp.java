@@ -2,7 +2,7 @@ package app.service;
 
 import app.dao.UserRepository;
 import app.dto.DTOBuilder;
-import app.dto.UserResponseDTO;
+import app.dto.UserDTO;
 import app.entity.User;
 import app.security.TokenProvider;
 import app.exeption.CustomException;
@@ -35,10 +35,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO signin(String username, String password) throws CustomException{
+    public UserDTO signin(String username, String password) throws CustomException{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            UserResponseDTO responseDTO = getUserResponseDTO(username);
+            UserDTO responseDTO = getUserDTO(username);
             return responseDTO;
         } catch (AuthenticationException e) {
             throw new CustomException("Usuario o contraseña incorrectos", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -47,12 +47,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO signup(User user) {
+    public UserDTO signup(User user) {
         if (!userRepository.existsByUsername(user.getUsername())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            String token = this.tokenProvider.createToken(user.getUsername(), user.getRoles());
-            UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
+            String token = this.tokenProvider.createToken(user.getUsername(), user.getRoles(), user.getClient());
+            UserDTO responseDTO = DTOBuilder.userToUserDTO(user);
             responseDTO.setToken(token);
             return responseDTO;
         } else {
@@ -62,10 +62,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO delete(String username) {
+    public UserDTO delete(String username) {
         User user = userRepository.findByUsername(username);
         userRepository.deleteByUsername(username);
-        UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
+        UserDTO responseDTO = DTOBuilder.userToUserDTO(user);
         return responseDTO;
     }
 
@@ -87,16 +87,16 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO refresh(String username) {
-        UserResponseDTO responseDTO = getUserResponseDTO(username);
+    public UserDTO refresh(String username) {
+        UserDTO responseDTO = getUserDTO(username);
         return responseDTO;
     }
 
-    private UserResponseDTO getUserResponseDTO(String username) {
+    private UserDTO getUserDTO(String username) {
         User user = userRepository.findByUsername(username);
-        String token = this.tokenProvider.createToken(username, user.getRoles());
-        UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
-        responseDTO.setToken(token);
-        return responseDTO;
+        String token = this.tokenProvider.createToken(username, user.getRoles(), user.getClient());
+        UserDTO userDTO = DTOBuilder.userToUserDTO(user);
+        userDTO.setToken(token);
+        return userDTO;
     }
 }
