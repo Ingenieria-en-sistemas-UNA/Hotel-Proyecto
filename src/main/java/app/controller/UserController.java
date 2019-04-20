@@ -1,8 +1,7 @@
 package app.controller;
 
 import app.dto.DTOBuilder;
-import app.dto.UserDataDTO;
-import app.dto.UserResponseDTO;
+import app.dto.UserDTO;
 import app.entity.User;
 import app.exeption.CustomException;
 import app.service.UserService;
@@ -32,10 +31,10 @@ public class UserController {
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Algo malo ah sucedio"),
             @ApiResponse(code = 422, message = "username/password invalido")})
-    public ResponseEntity<UserResponseDTO> login (//
-                                                 @ApiParam("Username") @RequestParam String username,
-                                                 @ApiParam("Password") @RequestParam String password) throws CustomException {
-        UserResponseDTO responseDTO = userService.signin(username, password);
+    public ResponseEntity<UserDTO> login (//
+                                          @ApiParam("Username") @RequestParam String username,
+                                          @ApiParam("Password") @RequestParam String password) throws CustomException {
+        UserDTO responseDTO = userService.signin(username, password);
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -46,8 +45,8 @@ public class UserController {
             @ApiResponse(code = 403, message = "Acceso denegado"),
             @ApiResponse(code = 404, message = "El usuario no existe"),
             @ApiResponse(code = 500, message = "JWT token expirado o invalido")})
-    public ResponseEntity<UserResponseDTO> signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
-        UserResponseDTO responseDTO = userService.signup(modelMapper.map(user, User.class));
+    public ResponseEntity<UserDTO> signup(@ApiParam("Signup User") @RequestBody User user) {
+        UserDTO responseDTO = userService.signup(modelMapper.map(user, User.class));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -59,38 +58,38 @@ public class UserController {
             @ApiResponse(code = 403, message = "Acceso denegado"),
             @ApiResponse(code = 404, message = "El usuario no existe"),
             @ApiResponse(code = 500, message = "JWT token expirado o invalido")})
-    public ResponseEntity<UserResponseDTO> delete(@ApiParam("Username") @PathVariable String username) {
-        UserResponseDTO responseDTO = userService.delete(username);
+    public ResponseEntity<UserDTO> delete(@ApiParam("Username") @PathVariable String username) {
+        UserDTO responseDTO = userService.delete(username);
         return ResponseEntity.ok().body(responseDTO);
     }
 
     @GetMapping(value = "/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ApiOperation(value = "${UserController.search}", response = UserResponseDTO.class)
+    @ApiOperation(value = "${UserController.search}", response = UserDTO.class)
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Algo malo ah sucedio"),
             @ApiResponse(code = 403, message = "Acceso denegado"),
             @ApiResponse(code = 404, message = "El usuario no existe"),
             @ApiResponse(code = 500, message = "JWT token expirado o invalido")})
-    public UserResponseDTO search(@ApiParam("Username") @PathVariable String username) {
-        return DTOBuilder.userToUserResponseDTO(userService.search(username));
+    public UserDTO search(@ApiParam("Username") @PathVariable String username) {
+        return DTOBuilder.userToUserDTO(userService.search(username));
     }
 
     @GetMapping(value = "/me")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    @ApiOperation(value = "${UserController.me}", response = UserResponseDTO.class)
+    @ApiOperation(value = "${UserController.me}", response = UserDTO.class)
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Algo malo ah sucedio"), //
             @ApiResponse(code = 403, message = "Acceso denegado"), //
             @ApiResponse(code = 500, message = "JWT token expirado o invalido")})
-    public UserResponseDTO whoami(HttpServletRequest req) {
-        return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
+    public UserDTO whoami(HttpServletRequest req) {
+        return modelMapper.map(userService.whoami(req), UserDTO.class);
     }
 
     @GetMapping("/refresh/{userName}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    public ResponseEntity<UserResponseDTO> refresh(@PathVariable String userName) {
-        UserResponseDTO responseDTO = userService.refresh(userName);
+    public ResponseEntity<UserDTO> refresh(@PathVariable String userName) {
+        UserDTO responseDTO = userService.refresh(userName);
         return ResponseEntity.ok().body(responseDTO);
     }
 }

@@ -1,27 +1,28 @@
 package app.dto;
 
+import app.entity.Client;
 import app.entity.Role;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
-public class UserResponseDTO {
+public class UserDTO {
     @ApiModelProperty(position = 0)
     private Integer id;
     @ApiModelProperty(position = 1)
     private String username;
     @ApiModelProperty(position = 2)
-    private String email;
+    private List<Role> roles;
     @ApiModelProperty(position = 3)
-    List<Role> roles;
+    private String token;
     @ApiModelProperty(position = 4)
-    String token;
+    private Client client;
 
-    public UserResponseDTO(Integer id, String username, String email, List<Role> roles) {
+    public UserDTO(Integer id, String username, List<Role> roles, Client client) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.roles = roles;
+        this.client = client;
     }
 
     public Integer getId() {
@@ -40,14 +41,6 @@ public class UserResponseDTO {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public List<Role> getRoles() {
         return roles;
     }
@@ -62,5 +55,13 @@ public class UserResponseDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

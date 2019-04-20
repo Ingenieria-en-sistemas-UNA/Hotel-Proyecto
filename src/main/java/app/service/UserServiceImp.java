@@ -1,8 +1,8 @@
 package app.service;
 
-import app.dao.UserDao;
+import app.dao.UserRepository;
 import app.dto.DTOBuilder;
-import app.dto.UserResponseDTO;
+import app.dto.UserDTO;
 import app.entity.User;
 import app.security.TokenProvider;
 import app.exeption.CustomException;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserServiceImp implements UserService {
     
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -35,10 +35,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO signin(String username, String password) throws CustomException{
+    public UserDTO signin(String username, String password) throws CustomException{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            UserResponseDTO responseDTO = getUserResponseDTO(username);
+            UserDTO responseDTO = getUserDTO(username);
             return responseDTO;
         } catch (AuthenticationException e) {
             throw new CustomException("Usuario o contraseña incorrectos", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -47,12 +47,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO signup(User user) {
-        if (!userDao.existsByUsername(user.getUsername())) {
+    public UserDTO signup(User user) {
+        if (!userRepository.existsByUsername(user.getUsername())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userDao.save(user);
-            String token = this.tokenProvider.createToken(user.getUsername(), user.getRoles());
-            UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
+            userRepository.save(user);
+            String token = this.tokenProvider.createToken(user.getUsername(), user.getRoles(), user.getClient());
+            UserDTO responseDTO = DTOBuilder.userToUserDTO(user);
             responseDTO.setToken(token);
             return responseDTO;
         } else {
@@ -62,17 +62,17 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO delete(String username) {
-        User user = userDao.findByUsername(username);
-        userDao.deleteByUsername(username);
-        UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
+    public UserDTO delete(String username) {
+        User user = userRepository.findByUsername(username);
+        userRepository.deleteByUsername(username);
+        UserDTO responseDTO = DTOBuilder.userToUserDTO(user);
         return responseDTO;
     }
 
     @Override
     @Transactional
     public User search(String username) {
-        User user = userDao.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new CustomException("El usuario no fue encontrado", HttpStatus.NOT_FOUND);
         }
@@ -82,21 +82,21 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User whoami(HttpServletRequest req) {
-        return userDao.findByUsername(this.tokenProvider.getUsername(this.tokenProvider.resolveToken(req)));
+        return userRepository.findByUsername(this.tokenProvider.getUsername(this.tokenProvider.resolveToken(req)));
     }
 
     @Override
     @Transactional
-    public UserResponseDTO refresh(String username) {
-        UserResponseDTO responseDTO = getUserResponseDTO(username);
+    public UserDTO refresh(String username) {
+        UserDTO responseDTO = getUserDTO(username);
         return responseDTO;
     }
 
-    private UserResponseDTO getUserResponseDTO(String username) {
-        User user = userDao.findByUsername(username);
-        String token = this.tokenProvider.createToken(username, user.getRoles());
-        UserResponseDTO responseDTO = DTOBuilder.userToUserResponseDTO(user);
-        responseDTO.setToken(token);
-        return responseDTO;
+    private UserDTO getUserDTO(String username) {
+        User user = userRepository.findByUsername(username);
+        String token = this.tokenProvider.createToken(username, user.getRoles(), user.getClient());
+        UserDTO userDTO = DTOBuilder.userToUserDTO(user);
+        userDTO.setToken(token);
+        return userDTO;
     }
 }

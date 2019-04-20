@@ -6,14 +6,14 @@ import javax.persistence.*;
 public class Package {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Room room;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Guest guest;
+    private Client client;
 
     public int getId() {
         return id;
@@ -31,11 +31,11 @@ public class Package {
         this.room = room;
     }
 
-    public Guest getGuest() {
-        return guest;
+    public Client getClient() {
+        return client;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

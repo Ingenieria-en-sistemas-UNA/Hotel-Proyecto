@@ -1,5 +1,6 @@
 package app.security;
 
+import app.entity.Client;
 import app.entity.Role;
 import app.exeption.CustomException;
 import io.jsonwebtoken.Claims;
@@ -33,8 +34,8 @@ public class TokenProvider {
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 3600000; // 1h
+    @Value("${security.jwt.token.expire-length:14400000}")
+    private long validityInMilliseconds = 14400000 ; // 1h
 
     @Autowired
     private UserDetailServiceImp myUserDetails;
@@ -44,9 +45,11 @@ public class TokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username, List<Role> roles) {
+    public String createToken(String username, List<Role> roles, Client client) {
 
-        Claims claims = Jwts.claims().setSubject(username);
+        Claims claims = Jwts.claims();
+        claims.put("username", username);
+        claims.put("user_data", client);
         claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 
         Date now = new Date();
