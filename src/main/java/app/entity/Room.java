@@ -18,27 +18,26 @@ public class Room {
     @Column(nullable = false)
     private int guests;
 
-    public String getType() {
-        return type;
-    }
+    @Column(nullable = false, columnDefinition = "Boolean default false")
+    private Boolean state;
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public int getId() { return id; }
 
-    public Double getPrice() {
-        return price;
-    }
+    public void setId(int id) { this.id = id; }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    public String getType() { return type; }
 
-    public int getGuests() {
-        return guests;
-    }
+    public void setType(String type) { this.type = type; }
 
-    public void setGuests(int guests) {
-        this.guests = guests;
-    }
+    public Double getPrice() { return price; }
+
+    public void setPrice(Double price) { this.price = price; }
+
+    public int getGuests() { return guests; }
+
+    public void setGuests(int guests) { this.guests = guests; }
+
+    public Boolean getState() { return state; }
+
+    public void setState(Boolean state) { this.state = state; }
 }
