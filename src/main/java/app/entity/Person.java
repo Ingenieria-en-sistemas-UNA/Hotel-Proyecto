@@ -17,6 +17,12 @@ public class Person implements Serializable {
     @Column(nullable = false, name = "last_name")
     private String lastName;
 
+    public Person(String id, String name, String lastName) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+    }
+
     public String getId() {
         return id;
     }

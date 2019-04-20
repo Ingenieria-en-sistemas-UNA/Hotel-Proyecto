@@ -24,6 +24,13 @@ public class Client implements Serializable {
     @Column(nullable = false, name = "cellphone")
     private String cellphone;
 
+    public Client(String email, String address, Person person, String cellphone) {
+        this.email = email;
+        this.address = address;
+        this.person = person;
+        this.cellphone = cellphone;
+    }
+
     public int getId() {
         return id;
     }
