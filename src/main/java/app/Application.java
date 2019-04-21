@@ -45,6 +45,7 @@ public class Application implements CommandLineRunner{
             Client client = new Client();
             client.setAddress("");
             client.setCellphone("00000000");
+            client.setEmail("admin@gmail.com");
             client.setPerson(person);
             User user = new User();
             user.setUsername("admin");
