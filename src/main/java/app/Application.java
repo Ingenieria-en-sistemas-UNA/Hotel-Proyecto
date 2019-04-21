@@ -38,9 +38,19 @@ public class Application implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         try {
-            Person person = new Person("1","","");
-            Client client = new Client("","",person,"00000000");
-            User user = new User("admin","1234",client,new ArrayList<>(Arrays.asList(Role.ROLE_ADMIN)));
+            Person person = new Person();
+            person.setId("1");
+            person.setLastName("");
+            person.setName("");
+            Client client = new Client();
+            client.setAddress("");
+            client.setCellphone("00000000");
+            client.setPerson(person);
+            User user = new User();
+            user.setUsername("admin");
+            user.setPassword("1234");
+            user.setClient(client);
+            user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_ADMIN)));
             userService.signup(user);
         }catch (Exception e){
             System.err.println(e.getMessage());

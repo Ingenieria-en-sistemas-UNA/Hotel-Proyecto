@@ -47,8 +47,7 @@ public class TokenProvider {
 
     public String createToken(String username, List<Role> roles, Client client) {
 
-        Claims claims = Jwts.claims();
-        claims.put("username", username);
+        Claims claims = Jwts.claims().setSubject(username);
         claims.put("user_data", client);
         claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 

@@ -41,6 +41,7 @@ public class UserServiceImp implements UserService {
             UserDTO responseDTO = getUserDTO(username);
             return responseDTO;
         } catch (AuthenticationException e) {
+            System.err.println(e.getMessage());
             throw new CustomException("Usuario o contraseña incorrectos", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

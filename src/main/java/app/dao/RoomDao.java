@@ -6,7 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
-public interface DaoRoom {
+public interface RoomDao {
 
     Room save (Room room) throws DataIntegrityViolationException;
 

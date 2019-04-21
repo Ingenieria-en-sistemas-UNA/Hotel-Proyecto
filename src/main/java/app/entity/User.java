@@ -24,13 +24,6 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 
-    public User(String username,String password, Client client, List<Role> roles) {
-        this.username = username;
-        this.password = password;
-        this.client = client;
-        this.roles = roles;
-    }
-
     public Integer getId() {
         return id;
     }

@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class DaoRoomImpl implements DaoRoom {
+public class RoomDaoImpl implements RoomDao {
 
     @PersistenceContext
     EntityManager entityManager;
@@ -53,7 +53,7 @@ public class DaoRoomImpl implements DaoRoom {
 
     @Override
     public List<Room> list() {
-        List<Room> rooms = entityManager.createQuery("FROM room", Room.class).getResultList();//CHECK!!
+        List<Room> rooms = entityManager.createQuery("FROM Room", Room.class).getResultList();//CHECK!!
         return rooms;
     }
 }
