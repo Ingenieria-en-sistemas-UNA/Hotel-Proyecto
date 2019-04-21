@@ -45,6 +45,7 @@ public class RoomDaoImpl implements RoomDao {
     }
 
     @Override
+    @Transactional
     public Room delete(int id) throws EntityNotFoundException {
         Room room = this.get(id);
         entityManager.remove(room);
