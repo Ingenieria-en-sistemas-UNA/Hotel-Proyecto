@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -33,8 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/signin").permitAll()
                 .antMatchers("/user/signup").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
-                // Disallow everything else..
-                .anyRequest().authenticated();
+                .requestMatchers(CorsUtils::isCorsRequest).permitAll()
+                .anyRequest().authenticated()
+                .and().httpBasic()
+                .and().addFilterBefore(new WebSecurityCorsFilter(), ChannelProcessingFilter.class);
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");

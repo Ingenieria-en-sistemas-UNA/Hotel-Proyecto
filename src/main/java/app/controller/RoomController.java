@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/room")
 @Api(tags = "Room")
@@ -43,6 +42,7 @@ public class RoomController {
     }
 
     @GetMapping
+    @CrossOrigin
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca todas personas", response = List.class, notes = "Retorna una lista de objetos Room")
     public ResponseEntity<List<Room>> list() {
