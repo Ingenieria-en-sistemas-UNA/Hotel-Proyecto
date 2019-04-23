@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -35,11 +36,9 @@ public class PersonController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca una persona", response = Person.class, notes = "Retorna una persona por el ID")
-    public ResponseEntity<Person> get(@ApiParam(value = "El ID de la persona a buscar", required = true)@PathVariable("id")String id)
-        throws EntityNotFoundException{
-
-        Person person = personService.get(id);
-        return ResponseEntity.ok().body(person);
+    public ResponseEntity<List<Person>> list(){
+        List<Person> persons = personService.list();
+        return ResponseEntity.ok().body(persons);
     }
 
     @PutMapping("/{id}")

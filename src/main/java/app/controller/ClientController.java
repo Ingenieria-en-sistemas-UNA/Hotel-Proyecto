@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/Client")
@@ -32,11 +34,9 @@ public class ClientController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca un cliente", response = Client.class, notes = "Retorna un cliente por ID")
-    public  ResponseEntity<Client> get(@ApiParam(value = "El ID del cliente a buscar", required = true)@PathVariable("id")int id)
-        throws EntityNotFoundException{
-
-        Client client = clientService.get(id);
-        return ResponseEntity.ok().body(client);
+    public  ResponseEntity<List<Client>> list(){
+        List<Client> clients = clientService.list();
+        return ResponseEntity.ok().body(clients);
     }
 
     @PutMapping("/{id}")
