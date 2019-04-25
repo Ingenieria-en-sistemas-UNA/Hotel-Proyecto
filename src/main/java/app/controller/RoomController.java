@@ -56,7 +56,7 @@ public class RoomController {
     @ApiResponses({
             @ApiResponse(code = 500, message = "The room does not exist")})
     public ResponseEntity<Room> update(@ApiParam(value = "El ID de la habitación a actualizar", required = true) @PathVariable("id") int id,
-                                             @ApiParam(value = "Un objeto Room tipo Json", required = true) @RequestBody Room personDTO)
+                                       @ApiParam(value = "Un objeto Room tipo Json", required = true) @RequestBody Room personDTO)
             throws EntityNotFoundException {
 
         Room personDTOUpdatedResponse = roomService.update(id, personDTO);
