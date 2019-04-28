@@ -45,8 +45,8 @@ public class RoomController {
     @CrossOrigin
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca todas personas", response = List.class, notes = "Retorna una lista de objetos Room")
-    public ResponseEntity<List<Room>> list() {
-        List<Room> rooms = roomService.list();
+    public ResponseEntity<List<Room>> list(@RequestParam String filter) {
+        List<Room> rooms = roomService.list(filter);
         return ResponseEntity.ok().body(rooms);
     }
 
