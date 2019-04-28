@@ -38,7 +38,7 @@ public class RoomServiceImp implements RoomService {
     }
 
     @Override
-    public List<Room> list() {
-        return roomDao.list();
+    public List<Room> list(String filter) {
+        return roomDao.list(filter);
     }
 }

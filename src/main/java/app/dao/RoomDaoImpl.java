@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -53,8 +54,15 @@ public class RoomDaoImpl implements RoomDao {
     }
 
     @Override
-    public List<Room> list() {
-        List<Room> rooms = entityManager.createQuery("FROM Room", Room.class).getResultList();//CHECK!!
-        return rooms;
+    public List<Room> list(String filter) {
+        List<Room> rooms =  new ArrayList<>();
+        if(filter.equals("all")){
+            rooms = entityManager.createQuery("FROM Room", Room.class).getResultList();//CHECK!!
+        }else {
+            rooms = entityManager.createQuery("SELECT r FROM Room r where r.type LIKE CONCAT('%',:searchKeyword, '%')", Room.class)
+                                 .setParameter("searchKeyword", filter)
+                                 .getResultList();
+        }
+            return rooms;
     }
 }

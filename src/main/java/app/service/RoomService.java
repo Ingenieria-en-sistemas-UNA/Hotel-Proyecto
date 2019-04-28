@@ -16,5 +16,5 @@ public interface RoomService {
 
     Room delete(int id) throws EntityNotFoundException;
 
-    List<Room> list();
+    List<Room> list(String filter);
 }
