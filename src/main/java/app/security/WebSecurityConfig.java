@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()//
                 .antMatchers("/user/signin").permitAll()
+                .antMatchers("/downloadFile").permitAll()
                 .antMatchers("/user/signup").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 .requestMatchers(CorsUtils::isCorsRequest).permitAll()

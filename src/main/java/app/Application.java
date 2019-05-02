@@ -1,6 +1,5 @@
 package app;
 
-import app.controller.UserController;
 import app.entity.Client;
 import app.entity.Person;
 import app.entity.Role;
@@ -14,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,11 @@ public class Application implements CommandLineRunner{
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 
     @Override

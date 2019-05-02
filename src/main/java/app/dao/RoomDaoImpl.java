@@ -41,6 +41,8 @@ public class RoomDaoImpl implements RoomDao {
         room.setPrice(roomRequest.getPrice());
         room.setGuests(roomRequest.getGuests());
         room.setState(roomRequest.getState());
+        room.setDescription(roomRequest.getDescription());
+        room.setImg(roomRequest.getImg());
         entityManager.merge(room);
         return room;
     }
