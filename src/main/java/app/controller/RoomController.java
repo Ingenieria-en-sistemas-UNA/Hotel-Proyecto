@@ -29,22 +29,19 @@ public class RoomController {
     private RoomService roomService;
 
     @PostMapping(consumes = { "multipart/form-data"})
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Crea una habitación", response = ResponseEntity.class, notes = "Retorna la habitación añadida")
     @ResponseBody
     public ResponseEntity<Room> save(
             @ApiParam(value = "Un objeto Habitacion tipo Json", required = true) @Valid @RequestPart("file") MultipartFile file,
             @RequestPart Room room)
-            throws DataIntegrityViolationException, IOException {
+            throws DataIntegrityViolationException, IOException, EntityNotFoundException {
 
-        String fileName = fileStorageService.storeFile(file);
+        Room roomSave = roomService.save(room);
+        String fileName = fileStorageService.storeFile(file, "room", roomSave.getId());
+        roomSave.setImg(fileName);
+        Room roomResponse = roomService.update(roomSave.getId(), roomSave);
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-        room.setImg(fileName);
-        Room roomResponse = roomService.save(room);
         return ResponseEntity.ok().body(roomResponse);
     }
 
@@ -68,29 +65,32 @@ public class RoomController {
         return ResponseEntity.ok().body(rooms);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PutMapping(value = "/{id}", consumes = { "multipart/form-data"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Actualiza una habitación", response = ResponseEntity.class, notes = "Restorna la habitación actualizada")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The room does not exist")})
     public ResponseEntity<Room> update(@ApiParam(value = "El ID de la habitación a actualizar", required = true) @PathVariable("id") int id,
-                                       @ApiParam(value = "Un objeto Room tipo Json", required = true) @RequestBody Room personDTO)
+                                       @ApiParam(value = "Un objeto Room tipo Json", required = true) @Valid @RequestPart("file") MultipartFile file,
+                                       @RequestPart Room room)
             throws EntityNotFoundException {
 
-        Room personDTOUpdatedResponse = roomService.update(id, personDTO);
+        String fileName = fileStorageService.storeFile(file, "room", id);
+        room.setImg(fileName);
+        Room personDTOUpdatedResponse = roomService.update(id, room);
         return ResponseEntity.ok().body(personDTOUpdatedResponse);
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Elimina una Habitación", response = ResponseEntity.class, notes = "Retorna una respuesta OK")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The Room does not exist")})
-    public ResponseEntity<Room> delete(
-            @ApiParam(value = "El ID de la persona a eliminar", required = true) @PathVariable("id") int id)
+    public ResponseEntity<List<Integer>> delete(
+            @ApiParam(value = "El ID de la persona a eliminar", required = true) @RequestBody List<Integer> idRooms)
             throws EntityNotFoundException {
 
-        Room room = roomService.delete(id);
-        return ResponseEntity.ok().body(room);
+        roomService.delete(idRooms);
+        return ResponseEntity.ok().body(idRooms);
     }
 }

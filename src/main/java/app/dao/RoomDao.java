@@ -14,7 +14,7 @@ public interface RoomDao {
 
     Room update(int id, Room room) throws EntityNotFoundException;
 
-    Room delete(int id) throws EntityNotFoundException;
+    void delete(List<Integer> idRooms) throws EntityNotFoundException;
 
     List<Room> list(String filter);
 }

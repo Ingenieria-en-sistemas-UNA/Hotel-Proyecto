@@ -33,8 +33,8 @@ public class RoomServiceImp implements RoomService {
     }
 
     @Override
-    public Room delete(int id) throws EntityNotFoundException {
-        return roomDao.delete(id);
+    public void delete(List<Integer> idRooms) throws EntityNotFoundException {
+        roomDao.delete(idRooms);
     }
 
     @Override
