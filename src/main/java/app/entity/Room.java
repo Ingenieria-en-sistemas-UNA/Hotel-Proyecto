@@ -16,6 +16,12 @@ public class Room {
     private Double price;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column
+    private String img;
+
+    @Column(nullable = false)
     private int guests;
 
     @Column(nullable = false, columnDefinition = "Boolean default false")
@@ -40,4 +46,20 @@ public class Room {
     public Boolean getState() { return state; }
 
     public void setState(Boolean state) { this.state = state; }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 }

@@ -2,6 +2,7 @@ package app.controller;
 
 import app.entity.Room;
 import app.exeption.EntityNotFoundException;
+import app.service.FileStorageService;
 import app.service.RoomService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,23 +10,40 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/room")
 @Api(tags = "Room")
 public class RoomController {
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @Autowired
     private RoomService roomService;
 
-    @PostMapping
+    @PostMapping(consumes = { "multipart/form-data"})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Crea una habitación", response = ResponseEntity.class, notes = "Retorna la habitación añadida")
+    @ResponseBody
     public ResponseEntity<Room> save(
-            @ApiParam(value = "Un objeto Habitacion tipo Json", required = true) @RequestBody Room room)
-            throws DataIntegrityViolationException {
+            @ApiParam(value = "Un objeto Habitacion tipo Json", required = true) @Valid @RequestPart("file") MultipartFile file,
+            @RequestPart Room room)
+            throws DataIntegrityViolationException, IOException {
 
+        String fileName = fileStorageService.storeFile(file);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+        room.setImg(fileName);
         Room roomResponse = roomService.save(room);
         return ResponseEntity.ok().body(roomResponse);
     }
