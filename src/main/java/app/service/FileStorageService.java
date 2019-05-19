@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.regex.Pattern;
 
 @Service
 public class FileStorageService {
@@ -34,13 +35,24 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public void deleteFile(String filename){
+        Path targetLocation = this.fileStorageLocation.resolve(filename);
+        try {
+            Files.delete(targetLocation);
+        }catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + filename + ". Please try again!", ex);
+        }
+    }
+
+    public String storeFile(MultipartFile file, String type, int id) {
         // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String[] fileNameParts =  StringUtils.cleanPath(file.getOriginalFilename()).split(Pattern.quote("."));
+        String fileName = id + "-" + type + "." + fileNameParts[1].toLowerCase()
+                                                                  .replaceAll(" ", "-");
 
         try {
             // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
+            if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
@@ -58,7 +70,7 @@ public class FileStorageService {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new MyFileNotFoundException("File not found " + fileName);
