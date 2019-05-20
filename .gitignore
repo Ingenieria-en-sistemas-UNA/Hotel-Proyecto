@@ -90,3 +90,7 @@ nb-configuration.xml
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+src/test/
+
+
+/src/main/resources/application.properties
