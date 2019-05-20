@@ -36,7 +36,9 @@ public class VoucherDaoImpl implements VoucherDao {
     @Transactional
     public Voucher update(int id, Voucher voucherRequest) throws EntityNotFoundException {
         Voucher voucher = this.get(id);
-        voucher.setCustomPackage(voucherRequest.getCustomPackage());
+        voucher.setEmitter(voucherRequest.getEmitter());
+        voucher.setClient(voucherRequest.getClient());
+        voucher.setDate(voucherRequest.getDate());
         voucher.setPrice(voucherRequest.getPrice());
         entityManager.merge(voucher);
         return voucher;
