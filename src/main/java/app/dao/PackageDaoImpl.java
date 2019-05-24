@@ -38,6 +38,8 @@ public class PackageDaoImpl implements PackageDao {
         Package aPackage = this.get(id);
         aPackage.setRoom(requestPackage.getRoom());
         aPackage.setClient(requestPackage.getClient());
+        aPackage.setVoucher(requestPackage.getVoucher());
+        aPackage.setNumberNight(requestPackage.getNumberNight());
         entityManager.merge(aPackage);
         return aPackage;
     }

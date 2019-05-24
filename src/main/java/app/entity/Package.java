@@ -15,27 +15,29 @@ public class Package {
     @OneToOne(cascade = CascadeType.ALL)
     private Client client;
 
-    public int getId() {
-        return id;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    private Voucher voucher;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column(nullable = false)
+    private int numberNight;
 
-    public Room getRoom() {
-        return room;
-    }
+    public int getId() { return id; }
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
+    public void setId(int id) { this.id = id; }
 
-    public Client getClient() {
-        return client;
-    }
+    public Room getRoom() { return room; }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
+    public void setRoom(Room room) { this.room = room; }
+
+    public Client getClient() { return client; }
+
+    public void setClient(Client client) { this.client = client; }
+
+    public Voucher getVoucher() { return voucher; }
+
+    public void setVoucher(Voucher voucher) { this.voucher = voucher; }
+
+    public int getNumberNight() { return numberNight; }
+
+    public void setNumberNight(int numberNight) { this.numberNight = numberNight; }
 }

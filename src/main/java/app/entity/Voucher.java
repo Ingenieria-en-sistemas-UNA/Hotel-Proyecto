@@ -2,6 +2,7 @@ package app.entity;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,7 +19,7 @@ public class Voucher {
     private Client client;
 
     @Column
-    private Date date;
+    private LocalDate localDate;
 
     @Column
     private Double price;
@@ -35,9 +36,9 @@ public class Voucher {
 
     public void setClient(Client client) { this.client = client; }
 
-    public Date getDate() { return date; }
+    public LocalDate getLocalDate() {return localDate; }
 
-    public void setDate(Date date) { this.date = date; }
+    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
 
     public Double getPrice() {
         return price;
