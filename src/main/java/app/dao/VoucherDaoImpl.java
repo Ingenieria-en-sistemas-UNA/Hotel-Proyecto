@@ -41,6 +41,7 @@ public class VoucherDaoImpl implements VoucherDao {
         voucher.setDetail(voucherRequest.getDetail());
         voucher.setLocalDate(voucherRequest.getLocalDate());
         voucher.setPrice(voucherRequest.getPrice());
+        voucher.setNumberNight(voucherRequest.getNumberNight());
         entityManager.merge(voucher);
         return voucher;
     }

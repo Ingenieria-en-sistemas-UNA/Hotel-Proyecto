@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @PostMapping(consumes = { "multipart/form-data"})
+    @PostMapping(consumes = {"multipart/form-data"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Crea una habitación", response = ResponseEntity.class, notes = "Retorna la habitación añadida")
     @ResponseBody
@@ -46,7 +45,7 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Busca una Habitación", response = Room.class, notes = "Retorna una habitación por ID")
     public ResponseEntity<Room> get(@ApiParam(value = "El ID de la habitación a buscar", required = true) @PathVariable("id") int id)
             throws EntityNotFoundException {
@@ -61,11 +60,12 @@ public class RoomController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca todas personas", response = List.class, notes = "Retorna una lista de objetos Room")
     public ResponseEntity<List<Room>> list(@RequestParam String filter) {
+
         List<Room> rooms = roomService.list(filter);
         return ResponseEntity.ok().body(rooms);
     }
 
-    @PutMapping(value = "/{id}", consumes = { "multipart/form-data"})
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Actualiza una habitación", response = ResponseEntity.class, notes = "Restorna la habitación actualizada")
     @ApiResponses({
@@ -77,8 +77,8 @@ public class RoomController {
 
         String fileName = fileStorageService.storeFile(file, "room", id);
         room.setImg(fileName);
-        Room personDTOUpdatedResponse = roomService.update(id, room);
-        return ResponseEntity.ok().body(personDTOUpdatedResponse);
+        Room roomResponse = roomService.update(id, room);
+        return ResponseEntity.ok().body(roomResponse);
     }
 
     @DeleteMapping

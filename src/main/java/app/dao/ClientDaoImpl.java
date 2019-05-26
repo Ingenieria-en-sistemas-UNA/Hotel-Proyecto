@@ -37,6 +37,7 @@ public class ClientDaoImpl implements ClientDao {
     public Client update(int id, Client clientRequest) throws EntityNotFoundException {
         Client client = this.get(id);
         client.setEmail(clientRequest.getEmail());
+        client.setId_package(clientRequest.getId_package());
         client.setAddress(clientRequest.getAddress());
         client.setPerson(clientRequest.getPerson());
         client.setCellphone(clientRequest.getCellphone());

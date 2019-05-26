@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Client")
+@RequestMapping("/client")
 @Api(tags = "Client")
 public class ClientController {
 
@@ -22,20 +22,32 @@ public class ClientController {
     ClientService clientService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Crea un Cliente", response = ResponseEntity.class, notes = "Retorna la persona añadida")
     public ResponseEntity<Client> save(
             @ApiParam(value = "Un obejto cliente tipo Json", required = true) @RequestBody Client client)
             throws DataIntegrityViolationException {
+
         Client clientResponse = clientService.save(client);
         return ResponseEntity.ok().body(clientResponse);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    @ApiOperation(value = "Busca un cliente", response = Client.class, notes = "Retorna un cliente por ID")
-    public  ResponseEntity<List<Client>> list(){
+    @ApiOperation(value = "Lista de clientes", response = Client.class, notes = "Retorna una lista clientes")
+    public ResponseEntity<List<Client>> list() {
+
         List<Client> clients = clientService.list();
+        return ResponseEntity.ok().body(clients);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Lista de clientes", response = Client.class, notes = "Retorna una lista clientes")
+    public ResponseEntity<Client> get(@ApiParam(value = "El ID del cliente a buscar", required = true) @PathVariable("id") int id)
+            throws EntityNotFoundException {
+
+        Client clients = clientService.get(id);
         return ResponseEntity.ok().body(clients);
     }
 
@@ -44,9 +56,9 @@ public class ClientController {
     @ApiOperation(value = "Actualiza un cliente", response = ResponseEntity.class, notes = "Retorna el cliente actualizado")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The client does not exist")})
-    public ResponseEntity<Client> update ( @ApiParam(value = "El ID del cliente a actualizar", required = true) @PathVariable("id") int id,
-                                           @ApiParam(value = "Un objeto tipo Json", required = true) @PathVariable("id") Client clientDTO)
-        throws EntityNotFoundException{
+    public ResponseEntity<Client> update(@ApiParam(value = "El ID del cliente a actualizar", required = true) @PathVariable("id") int id,
+                                         @ApiParam(value = "Un objeto tipo Json", required = true) @PathVariable("id") Client clientDTO)
+            throws EntityNotFoundException {
 
         Client clientUpdate = clientService.update(id, clientDTO);
         return ResponseEntity.ok().body(clientUpdate);
@@ -59,12 +71,10 @@ public class ClientController {
             @ApiResponse(code = 500, message = "The client does not exist")})
     public ResponseEntity<Client> delete(
             @ApiParam(value = "El ID del cliente a eliminar", required = true) @PathVariable("id") int id)
-            throws EntityNotFoundException{
+            throws EntityNotFoundException {
 
         Client client = clientService.delete(id);
         return ResponseEntity.ok().body(client);
     }
-
-
 
 }

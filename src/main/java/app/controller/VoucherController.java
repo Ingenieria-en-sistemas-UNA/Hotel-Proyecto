@@ -1,7 +1,5 @@
 package app.controller;
 
-import app.entity.Package;
-import app.entity.Room;
 import app.entity.Voucher;
 import app.exeption.EntityNotFoundException;
 import app.service.VoucherService;
@@ -16,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Voucher")
+@RequestMapping("/voucher")
 @Api(tags = "Voucher")
 public class VoucherController {
 
@@ -35,7 +33,7 @@ public class VoucherController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Actualiza un voucher", response = ResponseEntity.class, notes = "Retorna voucher actualizado")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The voucher does not exist")})
@@ -56,7 +54,7 @@ public class VoucherController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Elimina un voucher", response = ResponseEntity.class, notes = "Retorna una respuesta OK")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The voucher does not exist")})

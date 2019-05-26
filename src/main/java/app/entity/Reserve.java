@@ -3,7 +3,7 @@ package app.entity;
 import javax.persistence.*;
 
 @Entity
-public class Package {
+public class Reserve {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +17,6 @@ public class Package {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Voucher voucher;
-
-    @Column(nullable = false)
-    private int numberNight;
 
     public int getId() { return id; }
 
@@ -37,7 +34,4 @@ public class Package {
 
     public void setVoucher(Voucher voucher) { this.voucher = voucher; }
 
-    public int getNumberNight() { return numberNight; }
-
-    public void setNumberNight(int numberNight) { this.numberNight = numberNight; }
 }

@@ -10,12 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Person")
+@RequestMapping("/person")
 @Api(tags = "Person")
 public class PersonController {
 
@@ -23,11 +22,11 @@ public class PersonController {
     PersonService personService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Crea una Persona", response = ResponseEntity.class, notes = "Retorna la persona añadida")
     public ResponseEntity<Person> save(
-        @ApiParam(value = "Un objeto persona tipo Json", required = true) @RequestBody Person person)
-        throws DataIntegrityViolationException {
+            @ApiParam(value = "Un objeto persona tipo Json", required = true) @RequestBody Person person)
+            throws DataIntegrityViolationException {
 
         Person personResponse = personService.save(person);
         return ResponseEntity.ok().body(personResponse);
@@ -36,7 +35,18 @@ public class PersonController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca una persona", response = Person.class, notes = "Retorna una persona por el ID")
-    public ResponseEntity<List<Person>> list(){
+    public ResponseEntity<Person> get(@ApiParam(value = "El ID de la persona a buscar", required = true) @PathVariable("id") String id)
+            throws EntityNotFoundException {
+
+        Person person = personService.get(id);
+        return ResponseEntity.ok().body(person);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @ApiOperation(value = "Lista de personas", response = Person.class, notes = "Retorna una lista de personas")
+    public ResponseEntity<List<Person>> list() {
+
         List<Person> persons = personService.list();
         return ResponseEntity.ok().body(persons);
     }
@@ -46,9 +56,9 @@ public class PersonController {
     @ApiOperation(value = "Actualiza una persona", response = ResponseEntity.class, notes = "Retorna la persona actualizada")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The person does not exist")})
-    public ResponseEntity<Person> update (@ApiParam(value = "El ID de la persona a actualizar", required = true) @PathVariable("id")String id,
-                                          @ApiParam(value = "Un objeto tipo Json", required = true) @RequestBody Person personDTO)
-        throws EntityNotFoundException{
+    public ResponseEntity<Person> update(@ApiParam(value = "El ID de la persona a actualizar", required = true) @PathVariable("id") String id,
+                                         @ApiParam(value = "Un objeto tipo Json", required = true) @RequestBody Person personDTO)
+            throws EntityNotFoundException {
 
         Person personUpdate = personService.update(id, personDTO);
         return ResponseEntity.ok().body(personUpdate);
@@ -60,8 +70,9 @@ public class PersonController {
     @ApiResponses({
             @ApiResponse(code = 500, message = "The person does not exist")})
     public ResponseEntity<Person> delete(
-            @ApiParam(value = "El ID de la persona a eliminar", required = true) @PathVariable("id")String id)
-            throws EntityNotFoundException{
+            @ApiParam(value = "El ID de la persona a eliminar", required = true) @PathVariable("id") String id)
+            throws EntityNotFoundException {
+
         Person person = personService.delete(id);
         return ResponseEntity.ok().body(person);
     }

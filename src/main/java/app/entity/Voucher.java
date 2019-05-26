@@ -30,6 +30,9 @@ public class Voucher {
     @Column
     private Double price;
 
+    @Column(nullable = false)
+    private int numberNight;
+
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
@@ -64,5 +67,13 @@ public class Voucher {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public int getNumberNight() {
+        return numberNight;
+    }
+
+    public void setNumberNight(int numberNight) {
+        this.numberNight = numberNight;
     }
 }
