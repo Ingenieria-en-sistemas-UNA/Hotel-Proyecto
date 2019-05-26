@@ -20,6 +20,7 @@ public class PackageDaoImpl implements PackageDao {
     @Transactional
     public Package save(Package aPackage) throws DataIntegrityViolationException {
         entityManager.persist(aPackage);
+        entityManager.flush();
         return aPackage;
     }
 

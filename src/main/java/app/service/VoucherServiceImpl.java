@@ -38,7 +38,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public List<Voucher> list() {
-        return voucherDao.list();
+    public List<Voucher> list(String filter) {
+        return voucherDao.list(filter);
     }
 }

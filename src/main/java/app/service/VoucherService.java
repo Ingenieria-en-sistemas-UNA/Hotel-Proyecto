@@ -16,5 +16,5 @@ public interface VoucherService {
 
     Voucher delete (int id) throws EntityNotFoundException;
 
-    List<Voucher> list();
+    List<Voucher> list(String filter);
 }

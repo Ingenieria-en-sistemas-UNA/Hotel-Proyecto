@@ -4,7 +4,11 @@ import app.entity.Client;
 import app.entity.Person;
 import app.entity.Role;
 import app.entity.User;
+import app.localDate.LocalDateFormatter;
 import app.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,10 +16,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.format.Formatter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -42,7 +49,7 @@ public class Application implements CommandLineRunner{
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         try {
             Person person = new Person();
             person.setId("1");
@@ -62,5 +69,11 @@ public class Application implements CommandLineRunner{
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
+    }
+
+    @Bean
+    @Primary
+    public Formatter<LocalDate> localDateFormatter() {
+        return new LocalDateFormatter();
     }
 }

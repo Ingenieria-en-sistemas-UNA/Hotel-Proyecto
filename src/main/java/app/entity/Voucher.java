@@ -1,6 +1,8 @@
 package app.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
@@ -16,9 +18,13 @@ public class Voucher {
     private String emitter;
 
     @Column(nullable = false)
-    private Client client;
+    private String receiver;
+
+    @Column(nullable = false)
+    private String detail;
 
     @Column
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate localDate;
 
     @Column
@@ -32,10 +38,6 @@ public class Voucher {
 
     public void setEmitter(String sender) { this.emitter = sender; }
 
-    public Client getClient() { return client; }
-
-    public void setClient(Client client) { this.client = client; }
-
     public LocalDate getLocalDate() {return localDate; }
 
     public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
@@ -46,5 +48,21 @@ public class Voucher {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

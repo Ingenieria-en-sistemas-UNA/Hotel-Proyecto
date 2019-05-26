@@ -1,5 +1,7 @@
 package app.controller;
 
+import app.entity.Package;
+import app.entity.Room;
 import app.entity.Voucher;
 import app.exeption.EntityNotFoundException;
 import app.service.VoucherService;
@@ -32,24 +34,25 @@ public class VoucherController {
         return ResponseEntity.ok().body(voucherResponse);
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    @ApiOperation(value = "Buscar un voucher", response = ResponseEntity.class, notes = "Retorna el voucher por ID")
-    public ResponseEntity<List<Voucher>> list(){
-        List<Voucher> vouchers = voucherService.list();
-        return ResponseEntity.ok().body(vouchers);
-    }
-
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Actualiza un voucher", response = ResponseEntity.class, notes = "Retorna voucher actualizado")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The voucher does not exist")})
-    public ResponseEntity<Voucher> save(@ApiParam(value = "El ID del voucher a actualizar", required = true)@PathVariable("id") int id,
+    public ResponseEntity<Voucher> update(@ApiParam(value = "El ID del voucher a actualizar", required = true)@PathVariable("id") int id,
                                         @ApiParam(value = "Un objeto voucher tipo Json", required = true) @RequestBody Voucher voucherDTO)
         throws EntityNotFoundException{
         Voucher voucher = voucherService.update(id, voucherDTO);
         return ResponseEntity.ok().body(voucher);
+    }
+
+    @GetMapping
+    @CrossOrigin
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @ApiOperation(value = "Busca todas facturas", response = List.class, notes = "Retorna una lista de objetos Voucher")
+    public ResponseEntity<List<Voucher>> list(@RequestParam String filter) {
+        List<Voucher> vouchers = voucherService.list(filter);
+        return ResponseEntity.ok().body(vouchers);
     }
 
     @DeleteMapping("/{id}")

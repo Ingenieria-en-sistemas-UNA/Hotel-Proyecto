@@ -26,7 +26,7 @@ public class VoucherDaoImpl implements VoucherDao {
     @Override
     public Voucher get(int id) throws EntityNotFoundException {
         Voucher voucher = entityManager.find(Voucher.class, id);
-        if(voucher == null){
+        if (voucher == null) {
             throw new EntityNotFoundException(Voucher.class);
         }
         return voucher;
@@ -37,7 +37,8 @@ public class VoucherDaoImpl implements VoucherDao {
     public Voucher update(int id, Voucher voucherRequest) throws EntityNotFoundException {
         Voucher voucher = this.get(id);
         voucher.setEmitter(voucherRequest.getEmitter());
-        voucher.setClient(voucherRequest.getClient());
+        voucher.setReceiver(voucherRequest.getReceiver());
+        voucher.setDetail(voucherRequest.getDetail());
         voucher.setLocalDate(voucherRequest.getLocalDate());
         voucher.setPrice(voucherRequest.getPrice());
         entityManager.merge(voucher);
@@ -53,8 +54,12 @@ public class VoucherDaoImpl implements VoucherDao {
     }
 
     @Override
-    public List<Voucher> list() {
-        List<Voucher> vouchers = entityManager.createQuery("FROM Voucher").getResultList();
-        return vouchers;
+    public List<Voucher> list(String filter) {
+        if (filter.equals("all")) {
+            return entityManager.createQuery("FROM Voucher", Voucher.class).getResultList();//CHECK!!
+        }
+        return entityManager.createQuery("SELECT r FROM Voucher r where r.receiver LIKE CONCAT('%',:searchKeyword, '%') or r.receiver LIKE CONCAT('%',:searchKeyword, '%')", Voucher.class)
+                .setParameter("searchKeyword", filter)
+                .getResultList();
     }
 }

@@ -56,15 +56,12 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public List<Room> list(String filter) {
-        List<Room> rooms =  new ArrayList<>();
-        if(filter.equals("all")){
-            rooms = entityManager.createQuery("FROM Room", Room.class).getResultList();//CHECK!!
-        }else {
-            rooms = entityManager.createQuery("SELECT r FROM Room r where r.type LIKE CONCAT('%',:searchKeyword, '%')", Room.class)
-                                 .setParameter("searchKeyword", filter)
-                                 .getResultList();
+        if (filter.equals("all")) {
+            return entityManager.createQuery("FROM Room", Room.class).getResultList();//CHECK!!
         }
-            return rooms;
+        return entityManager.createQuery("SELECT r FROM Room r where r.type LIKE CONCAT('%',:searchKeyword, '%')", Room.class)
+                .setParameter("searchKeyword", filter)
+                .getResultList();
     }
 
     @Override
