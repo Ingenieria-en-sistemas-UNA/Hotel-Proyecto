@@ -33,10 +33,17 @@ public class ReserveDaoImpl implements ReserveDao {
         reserve.setClient(client);
         entityManager.persist(reserve);
         entityManager.flush();
-        client.setId_package(reserve.getId());
+        updateClient(reserve, client);
         entityManager.merge(client);
-
         return reserve;
+    }
+
+    private void updateClient(Reserve reserve, Client client) {
+        client.setId_reserve(reserve.getId());
+        client.setPerson(reserve.getClient().getPerson());
+        client.setEmail(reserve.getClient().getEmail());
+        client.setAddress(reserve.getClient().getAddress());
+        client.setCellphone(reserve.getClient().getCellphone());
     }
 
     @Override
