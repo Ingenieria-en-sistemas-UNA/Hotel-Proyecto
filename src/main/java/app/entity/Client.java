@@ -20,9 +20,6 @@ public class Client implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Person person;
 
-    @Column
-    private int id_reserve;
-
     @Size(min = 8, max = 255, message = "Minimum cellphone length: 8 characters")
     @Column(nullable = false, name = "cellphone")
     private String cellphone;
@@ -67,11 +64,4 @@ public class Client implements Serializable {
         this.person = person;
     }
 
-    public int getId_reserve() {
-        return id_reserve;
-    }
-
-    public void setId_reserve(int id_reserve) {
-        this.id_reserve = id_reserve;
-    }
 }

@@ -69,12 +69,12 @@ public class ClientController {
     @ApiOperation(value = "Elimina un cliente", response = ResponseEntity.class, notes = "Retorna una respuesta OK")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The client does not exist")})
-    public ResponseEntity<Client> delete(
-            @ApiParam(value = "El ID del cliente a eliminar", required = true) @PathVariable("id") int id)
+    public ResponseEntity<List<Integer>> delete(
+            @ApiParam(value = "El ID del cliente a eliminar", required = true) @RequestBody List<Integer> idClients)
             throws EntityNotFoundException {
 
-        Client client = clientService.delete(id);
-        return ResponseEntity.ok().body(client);
+        clientService.delete(idClients);
+        return ResponseEntity.ok().body(idClients);
     }
 
 }

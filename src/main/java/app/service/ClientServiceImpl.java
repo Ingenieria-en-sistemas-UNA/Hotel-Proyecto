@@ -32,8 +32,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client delete(int id) throws EntityNotFoundException {
-        return clientDao.delete(id);
+    public void delete(List<Integer> idClients) throws EntityNotFoundException {
+        clientDao.delete(idClients);
     }
 
     @Override

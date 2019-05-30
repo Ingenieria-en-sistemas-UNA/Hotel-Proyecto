@@ -37,7 +37,6 @@ public class ClientDaoImpl implements ClientDao {
     public Client update(int id, Client clientRequest) throws EntityNotFoundException {
         Client client = this.get(id);
         client.setEmail(clientRequest.getEmail());
-        client.setId_reserve(clientRequest.getId_reserve());
         client.setAddress(clientRequest.getAddress());
         client.setPerson(clientRequest.getPerson());
         client.setCellphone(clientRequest.getCellphone());
@@ -47,10 +46,15 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     @Transactional
-    public Client delete(int id) throws EntityNotFoundException {
-        Client client = this.get(id);
-        entityManager.remove(client);
-        return client;
+    public void delete(List<Integer> idClients) throws EntityNotFoundException {
+        int i=0;
+        for(Integer id : idClients) {
+            if(++i%49==0) {
+                entityManager.flush();
+            }
+            Client client = entityManager.getReference(Client.class, id);
+            entityManager.remove(client);
+        }
     }
 
     @Override

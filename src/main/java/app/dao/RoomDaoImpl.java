@@ -72,7 +72,7 @@ public class RoomDaoImpl implements RoomDao {
             if(++i%49==0) {
                 entityManager.flush();
             }
-            Room room = entityManager.getReference(Room.class,id);
+            Room room = this.get(id);
             fileStorageService.deleteFile(room.getImg());
             entityManager.remove(room);
         }

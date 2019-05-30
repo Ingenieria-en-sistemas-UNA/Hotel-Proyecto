@@ -3,8 +3,10 @@ package app.dao;
 import app.entity.Client;
 import app.entity.Reserve;
 import app.entity.Room;
+import app.exeption.CustomException;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,17 +31,31 @@ public class ReserveDaoImpl implements ReserveDao {
         if(client == null){
             throw new EntityNotFoundException(Client.class);
         }
+        if(room.getState()){
+            throw new CustomException("La habitación esta ocupada", HttpStatus.CONFLICT);
+        }
         reserve.setRoom(room);
         reserve.setClient(client);
         entityManager.persist(reserve);
         entityManager.flush();
+        room.setState(true);
         updateClient(reserve, client);
+        entityManager.merge(room);
         entityManager.merge(client);
         return reserve;
     }
 
+    private Boolean clientHasARoom(Client client){
+        List<Reserve> reserves = this.list();
+        for (Reserve reserve: reserves ) {
+            if (reserve.getClient().getId() == client.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void updateClient(Reserve reserve, Client client) {
-        client.setId_reserve(reserve.getId());
         client.setPerson(reserve.getClient().getPerson());
         client.setEmail(reserve.getClient().getEmail());
         client.setAddress(reserve.getClient().getAddress());
