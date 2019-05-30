@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.entity.Reserve;
+import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import app.service.ReserveService;
 import io.swagger.annotations.*;
@@ -60,6 +61,25 @@ public class ReserveController {
 
         Reserve reserve = reserveService.update(id, reserveRequest);
         return ResponseEntity.ok().body(reserve);
+    }
+
+    @PutMapping("/unreserve")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @ApiOperation(value = "Libera una Room", response = ResponseEntity.class, notes = "retorna OK")
+    public ResponseEntity<String> unReserve(@ApiParam(value = "El ID del cliente", required = true) @PathVariable("id") int id,
+                                            @ApiParam(value = "La habitación a liberar", required = true) @RequestBody Room room)
+            throws EntityNotFoundException {
+        reserveService.unReserve(room, id);
+        return ResponseEntity.ok().body("Se liberó exitosamente");
+    }
+
+    @GetMapping("/client/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @ApiOperation(value = "Libera una Room", response = ResponseEntity.class, notes = "retorna OK")
+    public ResponseEntity<List<Reserve>> getClientReserves(@ApiParam(value = "El ID del cliente", required = true) @PathVariable("id") int id)
+            throws EntityNotFoundException {
+        List<Reserve> reserves = reserveService.getClientReserves(id);
+        return ResponseEntity.ok().body(reserves);
     }
 
     @DeleteMapping("/{id}")

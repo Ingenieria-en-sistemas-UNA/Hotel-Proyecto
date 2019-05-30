@@ -1,6 +1,7 @@
 package app.service;
 
 import app.entity.Reserve;
+import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -13,6 +14,10 @@ public interface ReserveService {
     Reserve get (int id) throws EntityNotFoundException;
 
     Reserve update (int id, Reserve reserve) throws EntityNotFoundException;
+
+    void unReserve(Room room, int idClient) throws EntityNotFoundException;
+
+    List<Reserve> getClientReserves(int idClient) throws EntityNotFoundException;
 
     Reserve delete (int id) throws EntityNotFoundException;
 

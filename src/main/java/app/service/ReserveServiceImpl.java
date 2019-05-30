@@ -2,6 +2,7 @@ package app.service;
 
 import app.dao.ReserveDao;
 import app.entity.Reserve;
+import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,6 +31,16 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     public Reserve update(int id, Reserve reserve) throws EntityNotFoundException {
         return reserveDao.update(id, reserve);
+    }
+
+    @Override
+    public void unReserve(Room room, int idClient) throws EntityNotFoundException {
+        reserveDao.unReserve(room, idClient);
+    }
+
+    @Override
+    public List<Reserve> getClientReserves(int idClient) throws EntityNotFoundException {
+        return reserveDao.getClientReserves(idClient);
     }
 
     @Override

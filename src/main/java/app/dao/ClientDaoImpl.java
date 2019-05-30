@@ -40,6 +40,7 @@ public class ClientDaoImpl implements ClientDao {
         client.setAddress(clientRequest.getAddress());
         client.setPerson(clientRequest.getPerson());
         client.setCellphone(clientRequest.getCellphone());
+        client.setMaxReserve(clientRequest.getMaxReserve());
         entityManager.merge(client);
         return client;
     }

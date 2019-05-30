@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -24,15 +25,13 @@ public class ReserveDaoImpl implements ReserveDao {
     @Transactional
     public Reserve save(Reserve reserve) throws DataIntegrityViolationException, EntityNotFoundException {
         Room room = entityManager.find(Room.class, reserve.getRoom().getId());
-        Client client = entityManager.find(Client.class, reserve.getClient().getId());
-        if(room == null){
-            throw new EntityNotFoundException(Room.class);
-        }
-        if(client == null){
-            throw new EntityNotFoundException(Client.class);
-        }
+        Client client = getClientOfReserve(reserve.getClient().getId());
+        verifyNullEntities(room, client);
         if(room.getState()){
             throw new CustomException("La habitación esta ocupada", HttpStatus.CONFLICT);
+        }
+        if(client.getMaxReserve() == 0){
+            throw new CustomException("EL cliente ya reservo las dos habitaciones por cuenta", HttpStatus.NOT_ACCEPTABLE);
         }
         reserve.setRoom(room);
         reserve.setClient(client);
@@ -45,14 +44,24 @@ public class ReserveDaoImpl implements ReserveDao {
         return reserve;
     }
 
-    private Boolean clientHasARoom(Client client){
+    private void verifyNullEntities(Room room, Client client) throws EntityNotFoundException {
+        if(room == null){
+            throw new EntityNotFoundException(Room.class);
+        }
+        if(client == null){
+            throw new EntityNotFoundException(Client.class);
+        }
+    }
+
+    private List<Reserve> getReserves(Client client){
         List<Reserve> reserves = this.list();
+        List<Reserve> returnReserves = new ArrayList<>();
         for (Reserve reserve: reserves ) {
             if (reserve.getClient().getId() == client.getId()) {
-                return true;
+                returnReserves.add(reserve);
             }
         }
-        return false;
+        return returnReserves;
     }
 
     private void updateClient(Reserve reserve, Client client) {
@@ -60,6 +69,7 @@ public class ReserveDaoImpl implements ReserveDao {
         client.setEmail(reserve.getClient().getEmail());
         client.setAddress(reserve.getClient().getAddress());
         client.setCellphone(reserve.getClient().getCellphone());
+        client.setMaxReserve(client.getMaxReserve() - 1 );
     }
 
     @Override
@@ -69,6 +79,28 @@ public class ReserveDaoImpl implements ReserveDao {
             throw new EntityNotFoundException(Reserve.class);
         }
         return reserve;
+    }
+
+    @Override
+    public void unReserve(Room roomRequest, int idClient) throws EntityNotFoundException {
+        Client client = getClientOfReserve(idClient);
+        Room room = entityManager.find(Room.class, roomRequest.getId());
+        verifyNullEntities(room, client);
+        client.setMaxReserve(client.getMaxReserve() + 1);
+        room.setState(false);
+    }
+
+    @Override
+    public List<Reserve> getClientReserves(int idClient) throws EntityNotFoundException {
+        Client client = getClientOfReserve(idClient);
+        if(client == null){
+            throw new EntityNotFoundException(Client.class);
+        }
+        return getReserves(client);
+    }
+
+    private Client getClientOfReserve(int idClient) {
+        return entityManager.find(Client.class, idClient);
     }
 
     @Override
