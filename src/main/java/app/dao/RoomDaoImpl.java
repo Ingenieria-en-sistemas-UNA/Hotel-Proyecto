@@ -34,7 +34,7 @@ public class RoomDaoImpl implements RoomDao {
     @Override
     public Room get(int id) throws EntityNotFoundException {
         Room room = entityManager.find(Room.class, id);
-        if(room == null){
+            if(room == null){
             throw new EntityNotFoundException(Room.class); //Check!!
         }
         return room;

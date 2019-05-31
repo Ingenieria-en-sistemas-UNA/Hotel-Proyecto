@@ -1,7 +1,5 @@
 package app.entity;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -26,7 +24,7 @@ public class Client implements Serializable {
     @Column(nullable = false, name = "cellphone")
     private String cellphone;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="max_reserve")
     private int maxReserve;
 
 

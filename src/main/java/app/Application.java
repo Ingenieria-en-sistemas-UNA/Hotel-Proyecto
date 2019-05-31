@@ -53,13 +53,14 @@ public class Application implements CommandLineRunner{
         try {
             Person person = new Person();
             person.setId("1");
-            person.setLastName("");
-            person.setName("");
+            person.setLastName("Site");
+            person.setName("Admin");
             Client client = new Client();
-            client.setAddress("");
+            client.setAddress("Atlantis");
             client.setCellphone("00000000");
             client.setEmail("admin@gmail.com");
             client.setPerson(person);
+            client.setMaxReserve(100);
             User user = new User();
             user.setUsername("admin");
             user.setPassword("1234");
