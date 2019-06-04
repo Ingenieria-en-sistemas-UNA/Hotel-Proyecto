@@ -1,8 +1,11 @@
 package app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 public class Client implements Serializable {
@@ -27,14 +30,13 @@ public class Client implements Serializable {
     @Column(nullable = false, name="max_reserve")
     private int maxReserve;
 
+    @Column
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate localDate;
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 
     public String getAddress() {
         return address;
@@ -75,4 +77,8 @@ public class Client implements Serializable {
     public void setMaxReserve(int maxReserve) {
         this.maxReserve = maxReserve;
     }
+
+    public LocalDate getLocalDate() { return localDate; }
+
+    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
 }

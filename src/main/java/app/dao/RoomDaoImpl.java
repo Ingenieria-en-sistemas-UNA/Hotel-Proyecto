@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.dto.FilterDate;
 import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import app.service.FileStorageService;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +52,26 @@ public class RoomDaoImpl implements RoomDao {
         room.setState(roomRequest.getState());
         room.setDescription(roomRequest.getDescription());
         room.setImg(roomRequest.getImg());
+        room.setLocalDate(roomRequest.getLocalDate());
         entityManager.merge(room);
         return room;
     }
 
     @Override
-    public List<Room> list(String filter) {
+    public List<Room> list(String filter, FilterDate filterDate) {
+        if(filterDate.getFinishDate() != null && filterDate.getFinishDate() != null) {
+            if (filter.equals("all")) {
+                return entityManager.createQuery("SELECT r FROM Room r WHERE r.localDate >= :start AND r.localDate <= :end", Room.class)
+                        .setParameter("start", filterDate.getFinishDate())
+                        .setParameter("end", filterDate.getFinishDate())
+                        .getResultList();//CHECK!!
+            }
+            return entityManager.createQuery("SELECT r FROM Room r WHERE r.type LIKE CONCAT('%',:searchKeyword, '%') AND r.localDate BETWEEN :start AND :end", Room.class)
+                    .setParameter("start", filterDate.getFinishDate())
+                    .setParameter("end", filterDate.getFinishDate())
+                    .getResultList();//CHECK!!
+
+        }
         if (filter.equals("all")) {
             return entityManager.createQuery("FROM Room", Room.class).getResultList();//CHECK!!
         }

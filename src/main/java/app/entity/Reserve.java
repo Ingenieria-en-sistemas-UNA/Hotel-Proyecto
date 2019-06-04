@@ -1,6 +1,9 @@
 package app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Reserve {
@@ -18,6 +21,11 @@ public class Reserve {
     @OneToOne(cascade = CascadeType.ALL)
     private Voucher voucher;
 
+    @Column
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate localDate;
+
+
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
@@ -34,4 +42,7 @@ public class Reserve {
 
     public void setVoucher(Voucher voucher) { this.voucher = voucher; }
 
+    public LocalDate getLocalDate() { return localDate; }
+
+    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
 }

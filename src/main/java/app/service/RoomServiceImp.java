@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dao.RoomDao;
+import app.dto.FilterDate;
 import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -38,7 +40,7 @@ public class RoomServiceImp implements RoomService {
     }
 
     @Override
-    public List<Room> list(String filter) {
-        return roomDao.list(filter);
+    public List<Room> list(String filter, FilterDate filterDate) {
+        return roomDao.list(filter, filterDate);
     }
 }

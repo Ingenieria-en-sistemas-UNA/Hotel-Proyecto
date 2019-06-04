@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.FilterDate;
 import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import app.service.FileStorageService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -55,13 +57,15 @@ public class RoomController {
 
     }
 
-    @GetMapping
+    @PostMapping("/list")
     @CrossOrigin
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Busca todas personas", response = List.class, notes = "Retorna una lista de objetos Room")
-    public ResponseEntity<List<Room>> list(@RequestParam String filter) {
+    @ResponseBody
+    public ResponseEntity<List<Room>> list(@RequestParam String filter,
+                                           @RequestBody FilterDate filterDate) {
 
-        List<Room> rooms = roomService.list(filter);
+        List<Room> rooms = roomService.list(filter, filterDate);
         return ResponseEntity.ok().body(rooms);
     }
 

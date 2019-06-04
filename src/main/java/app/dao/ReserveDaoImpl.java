@@ -110,6 +110,7 @@ public class ReserveDaoImpl implements ReserveDao {
         reserve.setRoom(reserveRequest.getRoom());
         reserve.setClient(reserveRequest.getClient());
         reserve.setVoucher(reserveRequest.getVoucher());
+        reserve.setLocalDate(reserveRequest.getLocalDate());
         entityManager.merge(reserve);
         return reserve;
     }
