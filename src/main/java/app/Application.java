@@ -57,10 +57,11 @@ public class Application implements CommandLineRunner{
             person.setName("Admin");
             Client client = new Client();
             client.setAddress("Atlantis");
+            client.setLocalDate(LocalDate.now());
             client.setCellphone("00000000");
             client.setEmail("admin@gmail.com");
             client.setPerson(person);
-            client.setMaxReserve(100);
+            client.setMaxReserve(2);
             User user = new User();
             user.setUsername("admin");
             user.setPassword("1234");
