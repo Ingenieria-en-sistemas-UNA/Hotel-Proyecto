@@ -57,7 +57,7 @@ public class ClientController {
     @ApiResponses({
             @ApiResponse(code = 500, message = "The client does not exist")})
     public ResponseEntity<Client> update(@ApiParam(value = "El ID del cliente a actualizar", required = true) @PathVariable("id") int id,
-                                         @ApiParam(value = "Un objeto tipo Json", required = true) @PathVariable("id") Client clientDTO)
+                                         @ApiParam(value = "Un objeto tipo Json", required = true) @RequestBody Client clientDTO)
             throws EntityNotFoundException {
 
         Client clientUpdate = clientService.update(id, clientDTO);

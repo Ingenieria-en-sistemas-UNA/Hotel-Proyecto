@@ -1,6 +1,9 @@
 package app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Reserve {
@@ -20,6 +23,10 @@ public class Reserve {
 
     @Column(nullable = false)
     private Boolean alive;
+
+    @Column
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate localDate;
 
     public int getId() { return id; }
 
@@ -44,4 +51,7 @@ public class Reserve {
     public void setAlive(Boolean alive) {
         this.alive = alive;
     }
+    public LocalDate getLocalDate() { return localDate; }
+
+    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
 }

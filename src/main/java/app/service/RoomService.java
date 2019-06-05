@@ -1,9 +1,11 @@
 package app.service;
 
+import app.dto.FilterDate;
 import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {
@@ -16,5 +18,5 @@ public interface RoomService {
     
     void delete(List<Integer> idRooms) throws EntityNotFoundException;
 
-    List<Room> list(String filter);
+    List<Room> list(String filter, FilterDate filterDate);
 }

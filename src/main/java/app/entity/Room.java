@@ -1,6 +1,9 @@
 package app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Room {
@@ -26,6 +29,10 @@ public class Room {
 
     @Column(nullable = false, columnDefinition = "Boolean default false")
     private Boolean state;
+
+    @Column
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate localDate;
 
     public int getId() { return id; }
 
@@ -63,4 +70,7 @@ public class Room {
         this.img = img;
     }
 
+    public LocalDate getLocalDate() { return localDate; }
+
+    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
 }
