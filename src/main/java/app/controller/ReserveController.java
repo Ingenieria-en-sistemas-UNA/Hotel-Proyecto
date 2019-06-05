@@ -66,11 +66,10 @@ public class ReserveController {
     @PutMapping("/unreserve")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Libera una Room", response = ResponseEntity.class, notes = "retorna OK")
-    public ResponseEntity<String> unReserve(@ApiParam(value = "El ID del cliente", required = true) @PathVariable("id") int id,
-                                            @ApiParam(value = "La habitación a liberar", required = true) @RequestBody Room room)
+    public ResponseEntity<Reserve> unReserve(@ApiParam(value = "La reservación a liberar", required = true) @RequestBody Reserve reserveRequest)
             throws EntityNotFoundException {
-        reserveService.unReserve(room, id);
-        return ResponseEntity.ok().body("Se liberó exitosamente");
+        Reserve reserve = reserveService.unReserve(reserveRequest);
+        return ResponseEntity.ok().body(reserve);
     }
 
     @GetMapping("/client/{id}")

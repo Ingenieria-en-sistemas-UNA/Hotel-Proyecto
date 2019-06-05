@@ -82,12 +82,19 @@ public class ReserveDaoImpl implements ReserveDao {
     }
 
     @Override
-    public void unReserve(Room roomRequest, int idClient) throws EntityNotFoundException {
-        Client client = getClientOfReserve(idClient);
-        Room room = entityManager.find(Room.class, roomRequest.getId());
+    public Reserve unReserve(Reserve reserveRequest) throws EntityNotFoundException {
+        Client client = getClientOfReserve(reserveRequest.getClient().getId());
+        Reserve reserve = this.get(reserveRequest.getId());
+        Room room = entityManager.find(Room.class, reserveRequest.getRoom().getId());
         verifyNullEntities(room, client);
+        reserve.setAlive(false);
         client.setMaxReserve(client.getMaxReserve() + 1);
         room.setState(false);
+        entityManager.merge(reserve);
+        entityManager.merge(client);
+        entityManager.merge(room);
+        entityManager.flush();
+        return reserve;
     }
 
     @Override
@@ -110,6 +117,7 @@ public class ReserveDaoImpl implements ReserveDao {
         reserve.setRoom(reserveRequest.getRoom());
         reserve.setClient(reserveRequest.getClient());
         reserve.setVoucher(reserveRequest.getVoucher());
+        reserve.setAlive(reserveRequest.getAlive());
         entityManager.merge(reserve);
         return reserve;
     }

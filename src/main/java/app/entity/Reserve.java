@@ -18,6 +18,9 @@ public class Reserve {
     @OneToOne(cascade = CascadeType.ALL)
     private Voucher voucher;
 
+    @Column(nullable = false)
+    private Boolean alive;
+
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
@@ -34,4 +37,11 @@ public class Reserve {
 
     public void setVoucher(Voucher voucher) { this.voucher = voucher; }
 
+    public Boolean getAlive() {
+        return alive;
+    }
+
+    public void setAlive(Boolean alive) {
+        this.alive = alive;
+    }
 }

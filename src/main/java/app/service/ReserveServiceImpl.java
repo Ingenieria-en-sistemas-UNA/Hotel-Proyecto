@@ -34,8 +34,8 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public void unReserve(Room room, int idClient) throws EntityNotFoundException {
-        reserveDao.unReserve(room, idClient);
+    public Reserve unReserve(Reserve reserveRequest) throws EntityNotFoundException {
+        return reserveDao.unReserve(reserveRequest);
     }
 
     @Override

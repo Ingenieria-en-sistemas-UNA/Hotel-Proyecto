@@ -62,4 +62,5 @@ public class Room {
     public void setImg(String img) {
         this.img = img;
     }
+
 }

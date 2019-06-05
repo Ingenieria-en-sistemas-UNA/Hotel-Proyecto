@@ -13,7 +13,7 @@ public interface ReserveDao {
 
     Reserve get (int id) throws EntityNotFoundException;
 
-    void unReserve(Room room, int idClient) throws EntityNotFoundException;
+    Reserve unReserve(Reserve reserveRequest) throws EntityNotFoundException;
 
     List<Reserve> getClientReserves(int idClient) throws EntityNotFoundException;
 
