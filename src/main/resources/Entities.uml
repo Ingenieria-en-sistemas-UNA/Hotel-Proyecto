@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="538.2345238095238" y="435.0">app.entity.User</node>
+    <node x="223.0" y="152.0">app.entity.Room</node>
+    <node x="20.0" y="163.0">app.entity.Voucher</node>
+    <node x="418.29285714285714" y="0.0">app.entity.Person</node>
+    <node x="609.0" y="218.0">app.entity.Role</node>
+    <node x="426.0" y="163.0">app.entity.Client</node>
+    <node x="250.16666666666669" y="424.0">app.entity.Reserve</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="app.entity.Reserve" target="app.entity.Room">
+      <point x="13.583333333333371" y="-79.0" />
+      <point x="345.25000000000006" y="404.0" />
+      <point x="358.83333333333337" y="404.0" />
+      <point x="54.33333333333337" y="101.0" />
+    </edge>
+    <edge source="app.entity.Person" target="app.entity.Person">
+      <point x="-45.666666666666664" y="46.0" />
+      <point x="441.1261904761905" y="112.0" />
+      <point x="398.29285714285714" y="112.0" />
+      <point x="398.29285714285714" y="46.0" />
+      <point x="-68.5" y="-0.0" />
+    </edge>
+    <edge source="app.entity.Client" target="app.entity.Person">
+      <point x="-40.75" y="-90.0" />
+      <point x="466.75" y="132.0" />
+      <point x="486.79285714285714" y="132.0" />
+      <point x="0.0" y="46.0" />
+    </edge>
+    <edge source="app.entity.Reserve" target="app.entity.Voucher">
+      <point x="-40.74999999999994" y="-79.0" />
+      <point x="290.91666666666674" y="394.0" />
+      <point x="155.83333333333337" y="394.0" />
+      <point x="54.33333333333337" y="90.0" />
+    </edge>
+    <edge source="app.entity.User" target="app.entity.User">
+      <point x="0.0" y="68.0" />
+      <point x="608.2345238095238" y="591.0" />
+      <point x="518.2345238095238" y="591.0" />
+      <point x="518.2345238095238" y="503.0" />
+      <point x="-70.0" y="-0.0" />
+    </edge>
+    <edge source="app.entity.Room" target="app.entity.Room">
+      <point x="-54.33333333333334" y="101.0" />
+      <point x="250.16666666666666" y="374.0" />
+      <point x="203.0" y="374.0" />
+      <point x="203.0" y="253.0" />
+      <point x="-81.5" y="-0.0" />
+    </edge>
+    <edge source="app.entity.Reserve" target="app.entity.Client">
+      <point x="40.75000000000006" y="-79.0" />
+      <point x="372.41666666666674" y="394.0" />
+      <point x="474.90000000000003" y="394.0" />
+      <point x="-32.599999999999994" y="90.0" />
+    </edge>
+    <edge source="app.entity.User" target="app.entity.Client">
+      <point x="-17.5" y="-68.0" />
+      <point x="590.7345238095238" y="404.0" />
+      <point x="572.7" y="404.0" />
+      <point x="65.19999999999999" y="90.0" />
+    </edge>
+    <edge source="app.entity.Client" target="app.entity.Client">
+      <point x="-65.2" y="90.0" />
+      <point x="442.3" y="363.0" />
+      <point x="406.0" y="363.0" />
+      <point x="406.0" y="253.0" />
+      <point x="-81.5" y="-0.0" />
+    </edge>
+    <edge source="app.entity.User" target="app.entity.Role">
+      <point x="52.5" y="-68.0" />
+      <point x="660.7345238095238" y="404.0" />
+      <point x="678.0" y="404.0" />
+      <point x="23.0" y="35.0" />
+    </edge>
+    <edge source="app.entity.Voucher" target="app.entity.Voucher">
+      <point x="-54.333333333333314" y="90.0" />
+      <point x="47.166666666666686" y="363.0" />
+      <point x="0.0" y="363.0" />
+      <point x="0.0" y="253.0" />
+      <point x="-81.5" y="-0.0" />
+    </edge>
+    <edge source="app.entity.Reserve" target="app.entity.Reserve">
+      <point x="0.0" y="79.0" />
+      <point x="331.6666666666667" y="602.0" />
+      <point x="230.16666666666669" y="602.0" />
+      <point x="230.16666666666669" y="503.0" />
+      <point x="-81.5" y="-0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.9453376205787781" x="350.5" y="301.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
