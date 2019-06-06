@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.dto.FilterDate;
 import app.entity.Voucher;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,5 +17,5 @@ public interface VoucherDao {
 
     Voucher delete (int id) throws EntityNotFoundException;
 
-    List<Voucher> list(String filter);
+    List<Voucher> list(String filter, FilterDate filterDate);
 }

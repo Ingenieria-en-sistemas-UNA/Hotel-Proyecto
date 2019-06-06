@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.FilterDate;
 import app.entity.Client;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,5 +17,5 @@ public interface ClientService {
 
     void delete (List<Integer> idClients) throws EntityNotFoundException;
 
-    List<Client> list();
+    List<Client> list(String filter, FilterDate filterDate);
 }

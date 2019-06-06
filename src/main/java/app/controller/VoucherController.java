@@ -1,5 +1,7 @@
 package app.controller;
 
+import app.dto.FilterDate;
+import app.entity.Client;
 import app.entity.Voucher;
 import app.exeption.EntityNotFoundException;
 import app.service.VoucherService;
@@ -44,12 +46,15 @@ public class VoucherController {
         return ResponseEntity.ok().body(voucher);
     }
 
-    @GetMapping
+    @PostMapping("/list")
     @CrossOrigin
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    @ApiOperation(value = "Busca todas facturas", response = List.class, notes = "Retorna una lista de objetos Voucher")
-    public ResponseEntity<List<Voucher>> list(@RequestParam String filter) {
-        List<Voucher> vouchers = voucherService.list(filter);
+    @ApiOperation(value = "Busca todas personas", response = List.class, notes = "Retorna una lista de objetos Room")
+    @ResponseBody
+    public ResponseEntity<List<Voucher>> list(@RequestParam String filter,
+                                             @RequestBody FilterDate filterDate) {
+
+        List<Voucher> vouchers = voucherService.list(filter, filterDate);
         return ResponseEntity.ok().body(vouchers);
     }
 

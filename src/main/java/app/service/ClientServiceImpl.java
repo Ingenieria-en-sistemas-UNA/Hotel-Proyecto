@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dao.ClientDao;
+import app.dto.FilterDate;
 import app.entity.Client;
 import app.exeption.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> list() {
-        return clientDao.list();
+    public List<Client> list(String filter, FilterDate filterDate) {
+        return clientDao.list(filter, filterDate);
     }
 }

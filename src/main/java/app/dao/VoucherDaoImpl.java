@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.dto.FilterDate;
 import app.entity.Voucher;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -55,11 +56,24 @@ public class VoucherDaoImpl implements VoucherDao {
     }
 
     @Override
-    public List<Voucher> list(String filter) {
+    public List<Voucher> list(String filter, FilterDate filterDate) {
+        if(filterDate.getInitialDate() != null && filterDate.getFinishDate() != null) {
+            if (filter.equals("all")) {
+                return entityManager.createQuery("SELECT r FROM Voucher r WHERE r.localDate >= :start AND r.localDate <= :end", Voucher.class)
+                        .setParameter("start", filterDate.getInitialDate())
+                        .setParameter("end", filterDate.getFinishDate())
+                        .getResultList();//CHECK!!
+            }
+            return entityManager.createQuery("SELECT r FROM Voucher r WHERE r.detail LIKE CONCAT('%',:searchKeyword, '%') AND r.localDate >= :start AND r.localDate <= :end", Voucher.class)
+                    .setParameter("start", filterDate.getFinishDate())
+                    .setParameter("end", filterDate.getFinishDate())
+                    .getResultList();//CHECK!!
+
+        }
         if (filter.equals("all")) {
             return entityManager.createQuery("FROM Voucher", Voucher.class).getResultList();//CHECK!!
         }
-        return entityManager.createQuery("SELECT r FROM Voucher r where r.receiver LIKE CONCAT('%',:searchKeyword, '%') or r.receiver LIKE CONCAT('%',:searchKeyword, '%')", Voucher.class)
+        return entityManager.createQuery("SELECT r FROM Voucher r WHERE r.detail LIKE CONCAT('%',:searchKeyword, '%')", Voucher.class)
                 .setParameter("searchKeyword", filter)
                 .getResultList();
     }

@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dao.VoucherDao;
+import app.dto.FilterDate;
 import app.entity.Voucher;
 import app.exeption.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public List<Voucher> list(String filter) {
-        return voucherDao.list(filter);
+    public List<Voucher> list(String filter, FilterDate filterDate) {
+        return voucherDao.list(filter, filterDate);
     }
 }

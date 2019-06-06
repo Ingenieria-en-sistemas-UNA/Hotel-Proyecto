@@ -1,6 +1,8 @@
 package app.controller;
 
+import app.dto.FilterDate;
 import app.entity.Client;
+import app.entity.Room;
 import app.exeption.EntityNotFoundException;
 import app.service.ClientService;
 import io.swagger.annotations.*;
@@ -32,12 +34,15 @@ public class ClientController {
         return ResponseEntity.ok().body(clientResponse);
     }
 
-    @GetMapping
+    @PostMapping("/list")
+    @CrossOrigin
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-    @ApiOperation(value = "Lista de clientes", response = Client.class, notes = "Retorna una lista clientes")
-    public ResponseEntity<List<Client>> list() {
+    @ApiOperation(value = "Busca todas personas", response = List.class, notes = "Retorna una lista de objetos Room")
+    @ResponseBody
+    public ResponseEntity<List<Client>> list(@RequestParam String filter,
+                                           @RequestBody FilterDate filterDate) {
 
-        List<Client> clients = clientService.list();
+        List<Client> clients = clientService.list(filter, filterDate);
         return ResponseEntity.ok().body(clients);
     }
 

@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.dto.FilterDate;
 import app.entity.Client;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -60,8 +61,25 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public List<Client> list() {
-        List<Client> clients = entityManager.createQuery("FROM Client", Client.class).getResultList();
-        return clients;
+    public List<Client> list(String filter, FilterDate filterDate) {
+        if(filterDate.getInitialDate() != null && filterDate.getFinishDate() != null) {
+            if (filter.equals("all")) {
+                return entityManager.createQuery("SELECT r FROM Client r WHERE r.localDate >= :start AND r.localDate <= :end", Client.class)
+                        .setParameter("start", filterDate.getInitialDate())
+                        .setParameter("end", filterDate.getFinishDate())
+                        .getResultList();//CHECK!!
+            }
+            return entityManager.createQuery("SELECT r FROM Client r WHERE r.email LIKE CONCAT('%',:searchKeyword, '%') AND r.localDate >= :start AND r.localDate <= :end", Client.class)
+                    .setParameter("start", filterDate.getFinishDate())
+                    .setParameter("end", filterDate.getFinishDate())
+                    .getResultList();//CHECK!!
+
+        }
+        if (filter.equals("all")) {
+            return entityManager.createQuery("FROM Client", Client.class).getResultList();//CHECK!!
+        }
+        return entityManager.createQuery("SELECT r FROM Client r WHERE r.email LIKE CONCAT('%',:searchKeyword, '%')", Client.class)
+                .setParameter("searchKeyword", filter)
+                .getResultList();
     }
 }
