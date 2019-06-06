@@ -66,7 +66,7 @@ public class RoomDaoImpl implements RoomDao {
                         .setParameter("end", filterDate.getFinishDate())
                         .getResultList();//CHECK!!
             }
-            return entityManager.createQuery("SELECT r FROM Room r WHERE r.type LIKE CONCAT('%',:searchKeyword, '%') AND r.localDate BETWEEN :start AND :end", Room.class)
+            return entityManager.createQuery("SELECT r FROM Room r WHERE r.type LIKE CONCAT('%',:searchKeyword, '%') AND r.localDate >= :start AND r.localDate <= :end", Room.class)
                     .setParameter("start", filterDate.getFinishDate())
                     .setParameter("end", filterDate.getFinishDate())
                     .getResultList();//CHECK!!
