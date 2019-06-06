@@ -59,10 +59,10 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public List<Room> list(String filter, FilterDate filterDate) {
-        if(filterDate.getFinishDate() != null && filterDate.getFinishDate() != null) {
+        if(filterDate.getInitialDate() != null && filterDate.getFinishDate() != null) {
             if (filter.equals("all")) {
                 return entityManager.createQuery("SELECT r FROM Room r WHERE r.localDate >= :start AND r.localDate <= :end", Room.class)
-                        .setParameter("start", filterDate.getFinishDate())
+                        .setParameter("start", filterDate.getInitialDate())
                         .setParameter("end", filterDate.getFinishDate())
                         .getResultList();//CHECK!!
             }
