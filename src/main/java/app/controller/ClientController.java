@@ -69,13 +69,13 @@ public class ClientController {
         return ResponseEntity.ok().body(clientUpdate);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Elimina un cliente", response = ResponseEntity.class, notes = "Retorna una respuesta OK")
     @ApiResponses({
             @ApiResponse(code = 500, message = "The client does not exist")})
-    public ResponseEntity<List<Integer>> delete(
-            @ApiParam(value = "El ID del cliente a eliminar", required = true) @RequestBody List<Integer> idClients)
+    public ResponseEntity<List<String>> delete(
+            @ApiParam(value = "El ID del cliente a eliminar", required = true) @RequestBody List<String> idClients)
             throws EntityNotFoundException {
 
         clientService.delete(idClients);

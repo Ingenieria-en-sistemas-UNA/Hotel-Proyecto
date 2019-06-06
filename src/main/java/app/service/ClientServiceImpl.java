@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void delete(List<Integer> idClients) throws EntityNotFoundException {
+    public void delete(List<String> idClients) throws EntityNotFoundException {
         clientDao.delete(idClients);
     }
 

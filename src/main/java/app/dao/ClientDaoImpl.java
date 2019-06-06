@@ -2,6 +2,7 @@ package app.dao;
 
 import app.dto.FilterDate;
 import app.entity.Client;
+import app.entity.User;
 import app.exeption.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
@@ -42,21 +43,25 @@ public class ClientDaoImpl implements ClientDao {
         client.setPerson(clientRequest.getPerson());
         client.setCellphone(clientRequest.getCellphone());
         client.setMaxReserve(clientRequest.getMaxReserve());
-        client.setLocalDate(clientRequest.getLocalDate());
         entityManager.merge(client);
         return client;
     }
 
     @Override
     @Transactional
-    public void delete(List<Integer> idClients) throws EntityNotFoundException {
+    public void delete(List<String> idClients) throws EntityNotFoundException {
         int i=0;
-        for(Integer id : idClients) {
+        List<User> users = entityManager.createQuery("FROM User", User.class).getResultList();
+        for(String id : idClients) {
             if(++i%49==0) {
                 entityManager.flush();
             }
-            Client client = entityManager.getReference(Client.class, id);
-            entityManager.remove(client);
+            for (User user: users) {
+                if(user.getClient().getPerson().getId().equals(id)){
+                    entityManager.remove(user);
+                    break;
+                }
+            }
         }
     }
 

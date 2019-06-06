@@ -15,7 +15,7 @@ public interface ClientService {
 
     Client update (int id, Client client) throws EntityNotFoundException;
 
-    void delete (List<Integer> idClients) throws EntityNotFoundException;
+    void delete (List<String> idClients) throws EntityNotFoundException;
 
     List<Client> list(String filter, FilterDate filterDate);
 }
